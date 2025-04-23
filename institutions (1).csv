@@ -1,0 +1,7 @@
+Institution,InterestRate,MaxLoanAmount,Covenants,ROE,ROA,NPLRatio,LoanType,Ticker
+JPMorgan Chase,4.2,2000000,DSCR>1.25;LTV<75,12.9,1.3,0.8,Business,JPM
+Bank of America,4.0,1500000,DSCR>1.2;LTV<80,11.8,1.2,0.9,Business,BAC
+Wells Fargo,4.1,1800000,DSCR>1.3;LTV<70,10.5,1.0,1.0,Mortgage,WFC
+Citigroup,4.5,1200000,DSCR>1.1;LTV<85,8.9,0.9,0.95,Personal,C
+Goldman Sachs,3.9,1000000,DSCR>1.4;LTV<65,14.0,1.4,0.7,Auto,GS
+Online Lender,5.2,250000,LTV<75;MinRatingBBB,15.0,2.0,1.0,Personal,
