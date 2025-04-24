@@ -74,7 +74,7 @@ if "Institution" not in df.columns:
 # ── D. (Optional) Fetch live metrics via yfinance ──────────────────────────
 tickers = [t for t in df["Ticker"].unique() if t]
 if tickers:
-    @st.cache_data
+    @st.cache
     def fetch_metrics(tks):
         out = []
         for t in tks:
