@@ -91,3 +91,49 @@ if selected_bank:
     if financial_data is not None:
         st.write(financial_data)
 
+import requests
+from bs4 import BeautifulSoup
+
+def get_sec_filings(company_name):
+    # Construct the SEC EDGAR search URL
+    base_url = "https://www.sec.gov"
+    search_url = f"{base_url}/cgi-bin/browse-edgar"
+    
+    # Parameters for the search
+    params = {
+        "action": "getcompany",
+        "CIK": "",  # Enter CIK number if known, otherwise search by company name
+        "type": "",  # Enter type of document like 10-K, 10-Q, etc.
+        "dateb": "",
+        "owner": "exclude",
+        "start": "0",
+        "count": "10",  # Number of documents to retrieve
+    }
+    
+    # Make a search request
+    response = requests.get(search_url, params=params)
+    
+    # Parse the response content
+    soup = BeautifulSoup(response.content, "html.parser")
+    
+    # Extract links to filings
+    filing_links = []
+    for row in soup.find_all("tr", class_="blueRow"):
+        cells = row.find_all("td")
+        if len(cells) > 3:
+            filing_type = cells[0].text.strip()
+            filing_date = cells[3].text.strip()
+            filing_href = cells[1].find("a", href=True)["href"]
+            filing_links.append({
+                "type": filing_type,
+                "date": filing_date,
+                "link": base_url + filing_href
+            })
+    
+    return filing_links
+
+# Example usage
+company_name = "JP Morgan Chase"
+filings = get_sec_filings(company_name)
+for filing in filings:
+    print(f"{filing['type']} - {filing['date']}: {filing['link']}")
