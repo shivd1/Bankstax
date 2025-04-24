@@ -44,4 +44,34 @@ if selected_bank:
 
     st.markdown("---")
     st.write("Data source: Replace 'To be retrieved' with actual financial metrics retrieved from data providers or APIs.")
+import streamlit as st
+import pandas as pd
+from alpha_vantage.timeseries import TimeSeries
+
+# Initialize Alpha Vantage API key and TimeSeries object
+API_KEY = 'KA5TG8VK6M12Y4F5'
+ts = TimeSeries(key=API_KEY, output_format='pandas')
+
+# Function to fetch financial data for a given ticker
+def fetch_financial_data(ticker):
+    try:
+        # Get intraday data for demonstration
+        data, meta_data = ts.get_quote_endpoint(symbol=ticker)
+        return data
+    except Exception as e:
+        st.error(f"Error fetching data: {e}")
+
+# Streamlit app layout
+st.title('Bank Financial Data Viewer')
+selected_bank = st.selectbox('Select a Bank', ['JP Morgan Chase'])
+
+if selected_bank:
+    st.subheader(f'Financial Data for {selected_bank}')
+    ticker = 'JPM'
+    financial_data = fetch_financial_data(ticker)
+
+    # Display financial data
+    if financial_data is not None:
+        st.write(financial_data)
+
 
