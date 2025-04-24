@@ -44,7 +44,8 @@ if selected_bank:
 
     st.markdown("---")
     st.write("Data source: Replace 'To be retrieved' with actual financial metrics retrieved from data providers or APIs.")
-
+    
+#Finding gthe api key data 
 import streamlit as st
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
@@ -89,3 +90,4 @@ if selected_bank:
     # Display financial data
     if financial_data is not None:
         st.write(financial_data)
+
