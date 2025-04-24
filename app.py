@@ -1,29 +1,47 @@
 import streamlit as st
 import pandas as pd
-from alpha_vantage.timeseries import TimeSeries
 
-# Initialize Alpha Vantage API key and TimeSeries object
-API_KEY = 'KA5TG8VK6M12Y4F5'  # Replace with your valid API key
-ts = TimeSeries(key=API_KEY, output_format='pandas')
+# Define the list of banks and their ticker symbols
+banks = {
+    'JP Morgan Chase': 'JPM',
+    'Bank of America': 'BAC',
+    'American Express': 'AXP',
+    'Morgan Stanley': 'MS',
+    'TD Bank': 'TD',
+    'Citizens Bank': 'CFG',
+    'Goldman Sachs': 'GS'
+}
 
-# Function to fetch financial data for a given ticker
-def fetch_financial_data(ticker):
-    try:
-        # Example: Get daily adjusted close data
-        data, meta_data = ts.get_daily_adjusted(symbol=ticker, outputsize='compact')
-        return data
-    except Exception as e:
-        st.error(f"Error fetching data: {e}")
+# Function to fetch financial data
+def fetch_financial_data(bank_name, ticker):
+    # You can replace this with actual data retrieval code
+    financial_data = {
+        'Bank Name': bank_name,
+        'Ticker': ticker,
+        'Cash Holdings': 'To be retrieved',
+        'Credit Rating': 'To be retrieved',
+        'Liquidity Ratios': 'To be retrieved',
+        'NPAs': 'To be retrieved',
+        'Capital Adequacy Ratio': 'To be retrieved',
+        'Debt to Income Ratio': 'To be retrieved',
+        'Debt Ratio': 'To be retrieved',
+        'Tier 1 Capital Ratio': 'To be retrieved'
+    }
+    return financial_data
 
 # Streamlit app layout
 st.title('Bank Financial Data Viewer')
-selected_bank = st.selectbox('Select a Bank', ['JP Morgan Chase'])
+selected_bank = st.selectbox('Select a Bank', list(banks.keys()))
 
 if selected_bank:
     st.subheader(f'Financial Data for {selected_bank}')
-    ticker = 'JPM'  # Replace with the ticker symbol for the selected bank
-    financial_data = fetch_financial_data(ticker)
+    ticker = banks[selected_bank]
+    financial_data = fetch_financial_data(selected_bank, ticker)
 
     # Display financial data
-    if financial_data is not None:
-        st.write(financial_data)
+    df = pd.DataFrame([financial_data])
+    st.write(df)
+
+    st.markdown("---")
+    st.write("Data source: Replace 'To be retrieved' with actual financial metrics retrieved from data providers or APIs.")
+
