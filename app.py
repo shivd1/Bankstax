@@ -3,7 +3,7 @@ import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
 
 # Initialize Alpha Vantage API key and TimeSeries object
-API_KEY = 'your_actual_api_key_here'  # Replace with your valid API key
+API_KEY = 'KA5TG8VK6M12Y4F5'  # Replace with your valid API key
 ts = TimeSeries(key=API_KEY, output_format='pandas')
 
 # Function to fetch financial data for a given ticker
