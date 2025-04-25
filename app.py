@@ -58,7 +58,7 @@ def load_custom_css():
 # Load Excel data
 @st.cache_data
 def load_data():
-    df = pd.read_excel("Line items.xlsx", sheet_name="Sheet1", header=1, engine="openpyxl")
+    df = pd.read_excel("Line items (3).xlsx", sheet_name="Sheet1", header=1, engine="openpyxl")
     df.columns = [
         "Company", "PAT", "Depreciation", "Liabilities", "Cash",
         "Assets", "CurrentAssets", "CurrentLiabilities", "Receivables",
