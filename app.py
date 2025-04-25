@@ -33,6 +33,28 @@ def fetch_financial_data(bank_name, ticker):
 st.title('Bank Financial Data Viewer')
 selected_bank = st.selectbox('Select a Bank', list(banks.keys()))
 
+import streamlit as st
+from bank_data_viewer import fetch_bank_metrics
+
+def main():
+    st.title("📊 Bank Financial Data Viewer")
+
+    banks = ["Bank of America"]  # You can expand this list
+    selected_bank = st.selectbox("Select a Bank", banks)
+
+    if st.button("Show Data"):
+        metrics = fetch_bank_metrics(selected_bank)
+        if metrics:
+            st.subheader(f"📄 Financial Data: {selected_bank}")
+            for key, value in metrics.items():
+                st.write(f"**{key}**: {value}")
+        else:
+            st.warning("No data found for this bank.")
+
+if __name__ == "__main__":
+    main()
+
+
 if selected_bank:
     st.subheader(f'Financial Data for {selected_bank}')
     ticker = banks[selected_bank]
