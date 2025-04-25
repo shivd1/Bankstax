@@ -2,17 +2,13 @@ import streamlit as st
 import pandas as pd
 from scoring_engine import calculate_grades
 
-# Inject custom CSS for premium look
+# Custom style for luxury UI
 def load_custom_css():
     st.markdown("""
     <style>
         html, body, [class*="css"] {
             font-family: 'Segoe UI', sans-serif;
             background-color: #f4f6f9;
-        }
-        .block-container {
-            padding-top: 2rem;
-            padding-bottom: 2rem;
         }
         h1, h2, h3 {
             color: #012b4a;
@@ -36,7 +32,7 @@ def load_custom_css():
     </style>
     """, unsafe_allow_html=True)
 
-# Load and process bank data
+# Load Excel data
 @st.cache_data
 def load_data():
     df = pd.read_excel("Line items (3).xlsx", sheet_name="Sheet1", header=1, engine="openpyxl")
@@ -49,7 +45,7 @@ def load_data():
     df.set_index("Company", inplace=True)
     return df
 
-# Calculate all ratios
+# Ratio calculator
 def compute_ratios(row):
     return {
         "Core Deposits to Total Deposits": row["CoreDeposits"] / row["TotalDeposits"],
@@ -60,33 +56,32 @@ def compute_ratios(row):
         "Loans to Deposit Ratio": row["Loans"] / row["TotalDeposits"]
     }
 
-# Begin app
-st.set_page_config(page_title="Bankstax Risk Analyzer", layout="wide", page_icon="🏦")
+# App Layout
+st.set_page_config(page_title="Bankstax Analyzer", layout="wide", page_icon="🏦")
 load_custom_css()
 
-# Hero section
 st.markdown("<h1 style='text-align:center;'>🏦 Bankstax Risk Analyzer</h1>", unsafe_allow_html=True)
-st.markdown("<h4 style='text-align:center; color:#444;'>A dual-grade dashboard for depositor and borrower confidence.</h4>", unsafe_allow_html=True)
+st.markdown("<h4 style='text-align:center; color:#444;'>Choose your role: depositor or corporate borrower — and analyze risk smartly.</h4>", unsafe_allow_html=True)
 st.markdown("---")
 
-# Load data and user selects bank
+# Choose role
+role = st.radio("Choose your role:", ["💰 I’m a Depositor", "🏢 I’m a Borrower (Corporate)"])
+
+# Choose bank
 df = load_data()
 bank_list = df.index.tolist()
-selected_bank = st.selectbox("Select a bank to evaluate", bank_list)
+selected_bank = st.selectbox("Select a bank to analyze", bank_list)
 
-if st.button("🔍 Run Institutional Analysis"):
+if st.button("🔍 Run Analysis"):
     row = df.loc[selected_bank]
     ratios = compute_ratios(row)
     results = calculate_grades(ratios)
 
     st.markdown(f"<h2 style='color:#012b4a;'>📌 Bank Selected: {selected_bank}</h2>", unsafe_allow_html=True)
 
-    col1, col2 = st.columns(2)
-
-    # Depositor View
-    with col1:
-        st.markdown("<h3>💰 Depositor Safety</h3>", unsafe_allow_html=True)
-        st.markdown(f"<div class='card'><span class='metric-title'>Depositor Grade</span><br><span class='metric-value'>{results['depositor']['grade']}</span></div>", unsafe_allow_html=True)
+    if "Depositor" in role:
+        st.markdown("<h3>💰 Depositor Safety Analysis</h3>", unsafe_allow_html=True)
+        st.markdown(f"<div class='card'><span class='metric-title'>Grade</span><br><span class='metric-value'>{results['depositor']['grade']}</span></div>", unsafe_allow_html=True)
         for metric, info in results["depositor"]["details"].items():
             st.markdown(f"""
                 <div class="card">
@@ -95,10 +90,9 @@ if st.button("🔍 Run Institutional Analysis"):
                 </div>
             """, unsafe_allow_html=True)
 
-    # Borrower View
-    with col2:
-        st.markdown("<h3>🏢 Corporate Lending Risk</h3>", unsafe_allow_html=True)
-        st.markdown(f"<div class='card'><span class='metric-title'>Borrower Grade</span><br><span class='metric-value'>{results['borrower']['grade']}</span></div>", unsafe_allow_html=True)
+    elif "Borrower" in role:
+        st.markdown("<h3>🏢 Corporate Loanworthiness Analysis</h3>", unsafe_allow_html=True)
+        st.markdown(f"<div class='card'><span class='metric-title'>Grade</span><br><span class='metric-value'>{results['borrower']['grade']}</span></div>", unsafe_allow_html=True)
         for metric, info in results["borrower"]["details"].items():
             st.markdown(f"""
                 <div class="card">
@@ -108,5 +102,4 @@ if st.button("🔍 Run Institutional Analysis"):
             """, unsafe_allow_html=True)
 
     st.markdown("---")
-    st.success("🔎 Risk analysis completed. Adjust your Excel data to add more banks.")
-
+    st.success("Analysis complete. You can switch roles or banks for a new view.")
