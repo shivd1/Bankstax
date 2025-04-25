@@ -5,7 +5,7 @@ from scoring_engine import calculate_grades
 # Load data
 @st.cache_data
 def load_data():
-    df = pd.read_excel("Line items (1).xlsx", sheet_name="Sheet1", header=1, engine="openpyxl")
+    df = pd.read_excel("Line items (2).xlsx", sheet_name="Sheet1", header=1, engine="openpyxl")
     df.columns = [
         "Company", "PAT", "Depreciation", "Liabilities", "Cash",
         "Assets", "CurrentAssets", "CurrentLiabilities", "Receivables",
