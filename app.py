@@ -1,21 +1,37 @@
 import streamlit as st
 from bank_data_viewer import fetch_bank_metrics
 
-# Streamlit app layout configuration
-st.set_page_config(page_title="Bank Data", layout="wide")
+# Streamlit page setup
+st.set_page_config(page_title="Bank Insights", layout="wide")
 
-# Single clear header
-st.title("📊 Bank of America - Financial Metrics Viewer")
+# Main title
+st.markdown("<h1 style='text-align: center; color: navy;'>🏦 Bank Financial Dashboard</h1>", unsafe_allow_html=True)
+st.markdown("<h4 style='text-align: center;'>Access key financial metrics for leading institutions</h4>", unsafe_allow_html=True)
+st.markdown("---")
 
-# Only show Bank of America for now
+# Focused on Bank of America for now
 selected_bank = "Bank of America"
 
-# Button to trigger data display
-if st.button("🔍 Show Bank Data"):
-    metrics = fetch_bank_metrics(selected_bank)
-    if metrics:
-        st.subheader(f"📄 Financial Data for {selected_bank}")
-        for key, value in metrics.items():
-            st.write(f"**{key}**: {value:,}" if isinstance(value, (int, float)) else f"**{key}**: {value}")
-    else:
-        st.warning("No data found for this bank.")
+# Centered button
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    if st.button("📊 View Data for Bank of America"):
+        metrics = fetch_bank_metrics(selected_bank)
+
+        if metrics:
+            st.success(f"Showing financial data for {selected_bank}")
+
+            # Divide into two columns for readability
+            left, right = st.columns(2)
+            items = list(metrics.items())
+            midpoint = len(items) // 2
+
+            with left:
+                for key, value in items[:midpoint]:
+                    st.markdown(f"**{key}**: {value:,}" if isinstance(value, (int, float)) else f"**{key}**: {value}")
+
+            with right:
+                for key, value in items[midpoint:]:
+                    st.markdown(f"**{key}**: {value:,}" if isinstance(value, (int, float)) else f"**{key}**: {value}")
+        else:
+            st.error("No financial data found.")
