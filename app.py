@@ -32,6 +32,42 @@ def load_custom_css():
     </style>
     """, unsafe_allow_html=True)
 
+    st.markdown("""
+    <style>
+        body {
+            background: linear-gradient(135deg, #012b4a, #4b89ac);
+            background-attachment: fixed;
+        }
+        .block-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 2rem 3rem;
+            box-shadow: 0 0 30px rgba(0,0,0,0.05);
+            margin-top: 2rem;
+        }
+        h1, h2, h3 {
+            color: #012b4a;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .card {
+            background: white;
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 1rem;
+        }
+        .metric-title {
+            font-weight: 600;
+            font-size: 16px;
+            color: #333;
+        }
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
 # Load Excel data
 @st.cache_data
 def load_data():
